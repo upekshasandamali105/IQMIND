@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IQ MIND QUIZ</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#001f54;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.quiz-container{
+    width:100%;
+    max-width:750px;
+    background:#00a8ff;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* TOP BAR */
+
+.top-bar{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.logo{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    object-fit:cover;
+    background:white;
+    padding:5px;
+}
+
+.title-box h1{
+    color:white;
+    font-size:32px;
+}
+
+.title-box p{
+    color:#eaf6ff;
+    font-size:15px;
+}
+
+/* QUESTION */
+
+#question-number{
+    color:white;
+    font-size:18px;
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+#question{
+    font-size:28px;
+    color:white;
+    margin-bottom:25px;
+    line-height:1.4;
+}
+
+/* ANSWERS */
+
+.answer-btn{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    border:none;
+    border-radius:12px;
+    font-size:18px;
+    cursor:pointer;
+    background:white;
+    transition:0.3s;
+    font-weight:bold;
+}
+
+.answer-btn:hover{
+    transform:scale(1.02);
+}
+
+.correct{
+    background:#22c55e !important;
+    color:white;
+}
+
+.wrong{
+    background:#ef4444 !important;
+    color:white;
+}
+
+/* BUTTONS */
+
+.controls{
+    text-align:center;
+    margin-top:25px;
+}
+
+#nextBtn,
+#finishBtn,
+#restartBtn{
+
+    background:#001f54;
+    color:white;
+    border:none;
+    padding:14px 30px;
+    border-radius:12px;
+    font-size:18px;
+    cursor:pointer;
+    display:none;
+}
+
+#nextBtn:hover,
+#finishBtn:hover,
+#restartBtn:hover{
+    background:#003b99;
+}
+
+/* RESULT */
+
+#result{
+    text-align:center;
+    color:white;
+}
+
+#result h2{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+#scoreText{
+    font-size:28px;
+    margin-bottom:25px;
+    line-height:1.8;
+}
+
+/* FACEBOOK BUTTON */
+
+.fb-section{
+    text-align:center;
+    margin-top:30px;
+}
+
+.fb-btn{
+    display:inline-block;
+    background:#1877f2;
+    color:white;
+    text-decoration:none;
+    padding:14px 25px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.fb-btn:hover{
+    background:#0f5fd3;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    #question{
+        font-size:22px;
+    }
+
+    .answer-btn{
+        font-size:16px;
+    }
+
+    .title-box h1{
+        font-size:24px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+<!-- TOP -->
+
+<div class="top-bar">
+
+<img src="logo.png" class="logo">
+
+<div class="title-box">
+<h1>IQ MIND</h1>
+<p>General Knowledge Quiz</p>
+</div>
+
+</div>
+
+<!-- QUIZ -->
+
+<div id="quiz-box">
+
+<p id="question-number"></p>
+
+<h2 id="question"></h2>
+
+<div id="answers"></div>
+
+<div class="controls">
+
+<button id="nextBtn">Next</button>
+
+<button id="finishBtn">Finish</button>
+
+</div>
+
+</div>
+
+<!-- RESULT -->
+
+<div id="result" style="display:none;">
+
+<h2>Quiz Completed</h2>
+
+<p id="scoreText"></p>
+
+<button id="restartBtn">Restart Quiz</button>
+
+</div>
+
+<!-- FACEBOOK -->
+
+<div class="fb-section">
+
+<a href="https://web.facebook.com/iqmind.lk"
+target="_blank"
+class="fb-btn">
+
+Follow IQ MIND on Facebook
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+const quiz = [
+
+{
+question:"ශ්‍රී ලංකාවේ අගනුවර කුමක්ද?",
+answers:["කොළඹ","මහනුවර","ගාල්ල","යාපනය"],
+correct:0
+},
+
+{
+question:"ලෝකයේ විශාලතම සාගරය කුමක්ද?",
+answers:["ඉන්දීය","අත්ලාන්තික්","පැසිෆික්","ආක්ටික්"],
+correct:2
+},
+
+{
+question:"2 + 5 = ?",
+answers:["5","6","7","8"],
+correct:2
+},
+
+{
+question:"ශ්‍රී ලංකාවේ ජාතික සත්වයා කුමක්ද?",
+answers:["අලියා","දිවියා","සිංහයා","වළහා"],
+correct:1
+},
+
+{
+question:"සූර්යයා උදාවෙන්නේ?",
+answers:["බටහිර","නැගෙනහිර","දකුණ","උතුර"],
+correct:1
+},
+
+{
+question:"ජලයේ රසායනික සූත්‍රය කුමක්ද?",
+answers:["CO2","NaCl","H2O","O2"],
+correct:2
+},
+
+{
+question:"Facebook නිර්මාණය කළේ කවුද?",
+answers:["Bill Gates","Steve Jobs","Mark Zuckerberg","Elon Musk"],
+correct:2
+},
+
+{
+question:"ලෝකයේ උසම කන්ද කුමක්ද?",
+answers:["Everest","Piduruthalagala","Alps","K2"],
+correct:0
+},
+
+{
+question:"ශ්‍රී ලංකාවේ දිගම ගඟ කුමක්ද?",
+answers:["කැලණි","මහවැලි","කළු","වලවේ"],
+correct:1
+},
+
+{
+question:"පෘථිවියට ආසන්නම ග්‍රහයා කුමක්ද?",
+answers:["බුධ","අඟහරු","බ්‍රහස්පති","සිකුරු"],
+correct:0
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const nextBtn = document.getElementById("nextBtn");
+const finishBtn = document.getElementById("finishBtn");
+const questionNumber = document.getElementById("question-number");
+const quizBox = document.getElementById("quiz-box");
+const resultBox = document.getElementById("result");
+const scoreText = document.getElementById("scoreText");
+const restartBtn = document.getElementById("restartBtn");
+
+function loadQuestion(){
+
+answered = false;
+
+answersEl.innerHTML = "";
+
+nextBtn.style.display = "none";
+finishBtn.style.display = "none";
+
+let q = quiz[currentQuestion];
+
+questionNumber.innerText =
+`Question ${currentQuestion + 1} of ${quiz.length}`;
+
+questionEl.innerText = q.question;
+
+q.answers.forEach((answer,index)=>{
+
+const btn = document.createElement("button");
+
+btn.classList.add("answer-btn");
+
+btn.innerText = answer;
+
+btn.onclick = ()=>{
+
+if(answered) return;
+
+answered = true;
+
+const buttons =
+document.querySelectorAll(".answer-btn");
+
+buttons.forEach((b,i)=>{
+
+if(i === q.correct){
+
+b.classList.add("correct");
+
+}else{
+
+b.classList.add("wrong");
+
+}
+
+b.disabled = true;
+
+});
+
+if(index === q.correct){
+
+score++;
+
+}
+
+if(currentQuestion === quiz.length - 1){
+
+finishBtn.style.display = "inline-block";
+
+}else{
+
+nextBtn.style.display = "inline-block";
+
+}
+
+};
+
+answersEl.appendChild(btn);
+
+});
+
+}
+
+nextBtn.onclick = ()=>{
+
+currentQuestion++;
+
+loadQuestion();
+
+};
+
+finishBtn.onclick = ()=>{
+
+quizBox.style.display = "none";
+
+resultBox.style.display = "block";
+
+let percentage =
+(score / quiz.length) * 100;
+
+scoreText.innerHTML = `
+ලකුණු: <b>${score}/${quiz.length}</b>
+<br><br>
+ප්‍රතිශතය: <b>${percentage}%</b>
+`;
+
+};
+
+restartBtn.onclick = ()=>{
+
+currentQuestion = 0;
+score = 0;
+
+quizBox.style.display = "block";
+resultBox.style.display = "none";
+
+loadQuestion();
+
+};
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
